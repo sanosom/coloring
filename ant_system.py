@@ -179,14 +179,16 @@ def probability(eta, tao, beta, posibles, latest):
   return p
 
 if __name__ == '__main__':
-  graph = coloring.read('data/gc_100_1')
+  graph = coloring.read('data/gc_4_1')
 
   solutions = ant_system(graph, ants=10, iterations=5)
 
-  print 'results'
+  print('results')
 
   for i, iteration in enumerate(solutions, start=1):
-    print 'iteration', i
+    print ('iteration {}'.format(i))
 
     for solution in iteration:
-      print solution[0], '->', solution[1]
+      print ('{} {} {}'.format(solution[0], '->', solution[1]))
+  
+  print(graph)

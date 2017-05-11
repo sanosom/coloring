@@ -43,12 +43,12 @@ def test():
     [0, 1, 0, 0]
   ]
 
-  print 'graph', graph
+  print('graph {}'.format(graph))
 
-  print 'solution -> fitness -> number of colors'
+  print('solution -> fitness -> number of colors')
 
   for solution in solutions:
-    print solution, '->', fitness(graph, solution), '->', len(list(set(solution)))
+    print ('{} {} {} {} {}'.format(solution, '->', fitness(graph, solution), '->', len(list(set(solution)))))
 
 if __name__ == '__main__':
   test()
