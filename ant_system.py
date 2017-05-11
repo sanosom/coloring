@@ -118,12 +118,23 @@ def ant_system(graph, ants = 2, beta = 0.5, tao_init = 0.1, ro = 0.2, q0 = 0.5, 
     # Append solutions of every ant
     solutions.append(ant_solutions)
 
+    #Visited vector clean
+    visited = clean_visited(visited,n)
+
     # Increase iteration
     i += 1
     # Simulated annealing (Enfriamiento simulado)
     q0 += q_decrease
 
   return solutions
+
+# It cleans a visited vector
+def clean_visited(vector, n):
+    vector=[]
+    for a in range(n):
+        vector.append([0 for _ in range(n)])
+    return vector
+
 
 # Find posible vertices that can be coloured with the k color and is not coloured
 def uncoloured_vertices(graph, missing, colors, k):
@@ -200,6 +211,6 @@ if __name__ == '__main__':
 
     for solution in iteration:
       print ('{} {} {}'.format(solution[0], '->', solution[1]))
-  
+
   write_solution(solutions[-1][-1])
   #print(graph)
