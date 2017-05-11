@@ -17,6 +17,8 @@ def read(filename):
     graph[u].append(v)
     graph[v].append(u)
 
+  file.close()
+
   return graph
 
 def fitness(graph, solution):

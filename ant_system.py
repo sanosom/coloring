@@ -178,6 +178,16 @@ def probability(eta, tao, beta, posibles, latest):
 
   return p
 
+def write_solution(solution):
+    print('################### Optimal Solution #######################')
+    print (solution[1])
+    print(solution[0])
+    file = open('result.txt', 'w')
+    file.writelines('{}\n'.format(solution[1]))
+    file.writelines('{}'.format(solution[0]))
+    file.close()
+
+
 if __name__ == '__main__':
   graph = coloring.read('data/gc_4_1')
 
@@ -191,4 +201,5 @@ if __name__ == '__main__':
     for solution in iteration:
       print ('{} {} {}'.format(solution[0], '->', solution[1]))
   
-  print(graph)
+  write_solution(solutions[-1][-1])
+  #print(graph)
