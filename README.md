@@ -39,4 +39,4 @@ Los colores usados para colorear el grafo, se almacenaran en un arreglo, donde c
 
 ## Fitness
 
-La función ```fitness```, recibe el grafo y los colores a usar (posible solución), la función retorna el número de nodos con el mísmo color que tienen un enlace. El problema consiste en encontrar una solución con fitness 0.
+La función ```fitness```, recibe el grafo y los colores a usar (posible solución), la función retorna el número de nodos con el mísmo color que tienen un enlace.
