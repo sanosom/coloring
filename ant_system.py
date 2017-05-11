@@ -180,7 +180,7 @@ def probability(eta, tao, beta, posibles, latest):
 
 def write_solution(solution):
     print('################### Optimal Solution #######################')
-    print (solution[1])
+    print(solution[1])
     print(solution[0])
     file = open('result.txt', 'w')
     file.writelines('{}\n'.format(solution[1]))
