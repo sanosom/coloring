@@ -1,7 +1,8 @@
+from sys import argv
 from random import random, randint
 import coloring
 
-def ant_system(graph, ants = 2, beta = 0.5, tao_init = 0.1, ro = 0.2, q0 = 0.5, q_decrease = 0.05, iterations = 2):
+def ant_system(graph, ants = 2, beta = 0.5, tao_init = 0.1, ro = 0.2, q0 = 0.5, q_increase = 0.05, iterations = 2):
   n = len(graph)
   i = 1
 
@@ -124,7 +125,7 @@ def ant_system(graph, ants = 2, beta = 0.5, tao_init = 0.1, ro = 0.2, q0 = 0.5, 
     # Increase iteration
     i += 1
     # Simulated annealing (Enfriamiento simulado)
-    q0 += q_decrease
+    q0 += q_increase
 
   return solutions
 
@@ -200,7 +201,6 @@ def write_solution(solution):
 
 
 if __name__ == '__main__':
-  graph = coloring.read('data/gc_4_1')
 
   print('\n-----------------------------------------------')
   ants = input('Enter the number of Ants:\n>>')
@@ -211,9 +211,25 @@ if __name__ == '__main__':
   q0 = input('Enter q0:\n>>')
   q_decrease = input('Enter q decrease rate:\n>>')
   print('-----------------------------------------------\n\n')
+  if len(argv) != 2:
+    print('How to use')
+    print('python ant_system.py filename')
 
-  solutions = ant_system(graph, ants, beta, tao_init, ro, q0, q_decrease, iterations)
+    exit(1)
 
+  graph = coloring.read(argv[1])
+
+  print('-----------------------------------------------')
+  ants = int(input('Enter the number of Ants:\n>>'))
+  iterations = int(input('Enter the number of Max Iterations:\n>>'))
+  beta = float(input('Enter beta:\n>>'))
+  tao_init = float(input('Enter the initial pheromone:\n>>'))
+  ro = float(input('Enter the evaporation rate:\n>>'))
+  q0 = float(input('Enter q0:\n>>'))
+  q_increase = float(input('Enter q increase rate:\n>>'))
+  print('-----------------------------------------------\n\n')
+
+  solutions = ant_system(graph, ants, beta, tao_init, ro, q0, q_increase, iterations)
 
   print('results')
 
