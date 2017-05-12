@@ -1,8 +1,10 @@
 from sys import argv
 from random import random, randint
+
+import getopt
 import coloring
 
-def ant_system(graph, ants = 2, beta = 0.5, tao_init = 0.1, ro = 0.2, q0 = 0.5, q_increase = 0.05, iterations = 2):
+def ant_system(graph, ants = 4, beta = 0.5, tao_init = 0.1, ro = 0.2, q0 = 0.5, q_increase = 0.05, iterations = 10):
   n = len(graph)
   i = 1
 
@@ -199,26 +201,75 @@ def write_solution(solution):
     file.writelines('{}'.format(solution[0]))
     file.close()
 
+def help():
+  print('How to use')
+  print('python ant_system.py [options] filename')
+  print('')
+  print('Options')
+  print('-a: Ask for parameters by console')
+  print('-i val: Number of maximum iterations (Default: 10)')
+  print('-n val: Number of ants per iteration (Default: 4)')
+  print('-b val: Value of beta (Default: 0.5)')
+  print('-t val: Value of the initial pheromones "tao" (Default: 0.1)')
+  print('-r val: Value of the evaporation rate "ro" (Default: 0.2)')
+  print('-q val: Value of the initial "q0" (Default 0.5)')
+  print('-e val: Value of the q increase rate (Default: 0.05)')
+
+  exit(1)
 
 if __name__ == '__main__':
+  ants = 4
+  beta = 0.5
+  tao_init = 0.1
+  ro = 0.2
+  q0 = 0.5
+  q_increase = 0.05
+  iterations = 10
 
-  if len(argv) != 2:
-    print('How to use')
-    print('python ant_system.py filename')
+  try:
+    opts, args = getopt.getopt(argv[1:], 'hai:n:b:t:r:q:e:')
+  except getopt.GetoptError:
+    help()
 
-    exit(1)
+  if len(args) is not 1:
+    help()
 
-  graph = coloring.read(argv[1])
+  interactive = False
 
-  print('-----------------------------------------------')
-  ants = int(input('Enter the number of Ants:\n>>'))
-  iterations = int(input('Enter the number of Max Iterations:\n>>'))
-  beta = float(input('Enter beta:\n>>'))
-  tao_init = float(input('Enter the initial pheromone:\n>>'))
-  ro = float(input('Enter the evaporation rate:\n>>'))
-  q0 = float(input('Enter q0:\n>>'))
-  q_increase = float(input('Enter q increase rate:\n>>'))
-  print('-----------------------------------------------\n\n')
+  for opt, arg in opts:
+    if opt == '-h':
+      help()
+    if opt == '-a':
+      interactive = True
+    if opt == '-m':
+      method = int(arg)
+    if opt == '-i':
+      iterations = int(arg)
+    if opt == '-n':
+      ants = int(arg)
+    if opt == '-b':
+      beta = float(arg)
+    if opt == '-t':
+      tao_init = float(arg)
+    if opt == '-r':
+      ro = float(arg)
+    if opt == '-q':
+      q0 = float(arg)
+    if opt == '-e':
+      q_increase = float(arg)
+
+  graph = coloring.read(args[0])
+
+  if interactive:
+    print('-----------------------------------------------')
+    ants = int(input('Enter the number of Ants:\n>>'))
+    iterations = int(input('Enter the number of Max Iterations:\n>>'))
+    beta = float(input('Enter beta:\n>>'))
+    tao_init = float(input('Enter the initial pheromone:\n>>'))
+    ro = float(input('Enter the evaporation rate:\n>>'))
+    q0 = float(input('Enter q0:\n>>'))
+    q_increase = float(input('Enter q increase rate:\n>>'))
+    print('-----------------------------------------------\n\n')
 
   solutions = ant_system(graph, ants, beta, tao_init, ro, q0, q_increase, iterations)
 
