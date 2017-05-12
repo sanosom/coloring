@@ -9,6 +9,7 @@ def ant_system(graph, ants = 4, beta = 0.5, tao_init = 0.1, ro = 0.2, q0 = 0.5, 
   i = 1
 
   tao = []
+  best = ()
   visited = []
   solutions = []
 
@@ -105,8 +106,14 @@ def ant_system(graph, ants = 4, beta = 0.5, tao_init = 0.1, ro = 0.2, q0 = 0.5, 
       visited[latest][previous] += 1 / float(k)
       visited[previous][latest] += 1 / float(k)
 
+      k += 1
+
       # Add solution and colors to ant solutions
-      ant_solutions.append((solution, k + 1))
+      ant_solutions.append((solution, k))
+
+      # Update best solution
+      if len(best) is 0 or k < best[1]:
+        best = (solution, k)
 
     # print 'visited ->', visited
     # print 'tao ->', tao
@@ -129,7 +136,11 @@ def ant_system(graph, ants = 4, beta = 0.5, tao_init = 0.1, ro = 0.2, q0 = 0.5, 
     # Simulated annealing (Enfriamiento simulado)
     q0 += q_increase
 
-  return solutions
+    # Acconding to chromatic number the minimun colors is 2, so if the best is 2, end the algorithm
+    if best[1] is 2:
+      break
+
+  return best, solutions
 
 # It cleans a visited vector
 def clean_visited(vector, n):
@@ -193,12 +204,14 @@ def probability(eta, tao, beta, posibles, latest):
   return p
 
 def write_solution(solution):
-    print('################### Optimal Solution #######################')
+    path = ' '.join(str(k) for k in solution[0])
+
     print(solution[1])
-    print(solution[0])
+    print(path)
+
     file = open('result.txt', 'w')
     file.writelines('{}\n'.format(solution[1]))
-    file.writelines('{}'.format(solution[0]))
+    file.writelines('{}'.format(path))
     file.close()
 
 def help():
@@ -207,6 +220,7 @@ def help():
   print('')
   print('Options')
   print('-a: Ask for parameters by console')
+  print('-s: Show the solutions of every iteration')
   print('-i val: Number of maximum iterations (Default: 10)')
   print('-n val: Number of ants per iteration (Default: 4)')
   print('-b val: Value of beta (Default: 0.5)')
@@ -227,13 +241,14 @@ if __name__ == '__main__':
   iterations = 10
 
   try:
-    opts, args = getopt.getopt(argv[1:], 'hai:n:b:t:r:q:e:')
+    opts, args = getopt.getopt(argv[1:], 'hasi:n:b:t:r:q:e:')
   except getopt.GetoptError:
     help()
 
   if len(args) is not 1:
     help()
 
+  show = False
   interactive = False
 
   for opt, arg in opts:
@@ -241,6 +256,8 @@ if __name__ == '__main__':
       help()
     if opt == '-a':
       interactive = True
+    if opt == '-s':
+      show = True
     if opt == '-m':
       method = int(arg)
     if opt == '-i':
@@ -271,15 +288,21 @@ if __name__ == '__main__':
     q_increase = float(input('Enter q increase rate:\n>>'))
     print('-----------------------------------------------\n\n')
 
-  solutions = ant_system(graph, ants, beta, tao_init, ro, q0, q_increase, iterations)
+  best, solutions = ant_system(graph, ants, beta, tao_init, ro, q0, q_increase, iterations)
 
-  print('results')
+  if show:
+    # print('Graph')
 
-  for i, iteration in enumerate(solutions, start=1):
-    print ('iteration {}'.format(i))
+    #print(graph)
 
-    for solution in iteration:
-      print ('{} {} {}'.format(solution[0], '->', solution[1]))
+    print('Solutions found by iterations')
 
-  write_solution(solutions[-1][-1])
-  #print(graph)
+    for i, iteration in enumerate(solutions, start=1):
+      print ('Iteration {}'.format(i))
+
+      for solution in iteration:
+        print ('{} {} {}'.format(solution[0], '->', solution[1]))
+
+    print('Optimal solution')
+
+  write_solution(best)
