@@ -202,7 +202,7 @@ def write_solution(solution):
 if __name__ == '__main__':
   graph = coloring.read('data/gc_4_1')
 
-  print '\n-----------------------------------------------'
+  print('\n-----------------------------------------------')
   ants = input('Enter the number of Ants:\n>>')
   iterations = input('Enter the number of Max Iterations:\n>>')
   beta = input('Enter beta:\n>>')
@@ -210,7 +210,7 @@ if __name__ == '__main__':
   ro = input('Enter the evaporation rate:\n>>')
   q0 = input('Enter q0:\n>>')
   q_decrease = input('Enter q decrease rate:\n>>')
-  print '-----------------------------------------------\n\n'
+  print('-----------------------------------------------\n\n')
 
   solutions = ant_system(graph, ants, beta, tao_init, ro, q0, q_decrease, iterations)
 
